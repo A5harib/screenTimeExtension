@@ -17,7 +17,8 @@
   },
   "action": {
     "default_popup": "popup.html",
-    "default_title": "Check your ScreenTime"
+    "default_title": "Check your ScreenTime",
+    "default_icon": "icon.png"
   },
   "icons": {
     "128": "icon.png"
