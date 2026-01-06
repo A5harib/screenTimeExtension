@@ -9,7 +9,7 @@
   <style>
     body {
       padding: 0;
-      min-height: 100vh;
+      height: 100vh; /* Fixed height for flex container to enable scroll */
       display: flex;
       overflow: hidden; /* Prevent body scroll, handle in main-content */
     }
@@ -27,7 +27,7 @@
       left: -100px;
       width: 500px;
       height: 500px;
-      background: #4c1d95;
+      background: #7f1d1d; /* Dark Red */
       animation-delay: 0s;
     }
     .blob-2 {
@@ -35,7 +35,7 @@
       right: -100px;
       width: 600px;
       height: 600px;
-      background: #1e3a8a;
+      background: #450a0a; /* Very Dark Red */
       animation-delay: -5s;
     }
 
@@ -151,9 +151,9 @@
       <img src="icon.png" width="40" style="filter: drop-shadow(0 0 8px rgba(96, 165, 250, 0.5)); border-radius: 50%;" /> 
       ScreenTime
     </div>
-    <div class="nav-item active">Overview</div>
-    <div class="nav-item">Analytics</div>
-    <div class="nav-item">Settings</div>
+    <div class="nav-item active" data-tab="overview">Overview</div>
+    <div class="nav-item" data-tab="analytics">Analytics</div>
+    <div class="nav-item" data-tab="settings">Settings</div>
   </div>
   
   <div class="main-content">
@@ -162,38 +162,67 @@
       <p style="color: var(--text-muted); font-size: 1.1rem;">Your digital wellbeing, visualized.</p>
     </div>
 
-    <div class="stats-grid">
-      <div class="card">
-        <div class="stat-card-title">Total Time Today</div>
-        <div class="stat-card-value" id="todayTotal">--</div>
-      </div>
-      <div class="card">
-        <div class="stat-card-title">Most Visited</div>
-        <div class="stat-card-value" style="font-size: 1.8rem;" id="topSite">--</div>
-      </div>
+    <!-- Overview Section -->
+    <div id="overview-section" class="tab-content">
+        <div class="stats-grid">
+        <div class="card">
+            <div class="stat-card-title">Total Time Today</div>
+            <div class="stat-card-value" id="todayTotal">--</div>
+        </div>
+        <div class="card">
+            <div class="stat-card-title">Most Visited</div>
+            <div class="stat-card-value" style="font-size: 1.8rem;" id="topSite">--</div>
+        </div>
+        </div>
+
+        <div class="card">
+        <h3>Weekly Usage Trends</h3>
+        <div class="chart-container">
+            <canvas id="usageChart"></canvas>
+        </div>
+        </div>
+
+        <div class="card">
+          <h3>Top Activity</h3>
+          <table id="miniSiteTable">
+            <thead>
+              <tr>
+                <th>Site</th>
+                <th>Time</th>
+                <th>%</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
     </div>
 
-    <div class="card">
-      <h3>Weekly Usage Trends</h3>
-      <div class="chart-container">
-        <canvas id="usageChart"></canvas>
-      </div>
+    <!-- Analytics Section -->
+    <div id="analytics-section" class="tab-content" style="display: none;">
+        <div class="card">
+            <h3>Detailed Site Usage (Today)</h3>
+            <table id="siteTable">
+            <thead>
+                <tr>
+                <th>Site</th>
+                <th>Time Spent</th>
+                <th>Percentage</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Rows will be added here -->
+            </tbody>
+            </table>
+        </div>
     </div>
 
-    <div class="card">
-      <h3>Detailed Site Usage (Today)</h3>
-      <table id="siteTable">
-        <thead>
-          <tr>
-            <th>Site</th>
-            <th>Time Spent</th>
-            <th>Percentage</th>
-          </tr>
-        </thead>
-        <tbody>
-          <!-- Rows will be added here -->
-        </tbody>
-      </table>
+    <!-- Settings Section -->
+    <div id="settings-section" class="tab-content" style="display: none;">
+        <div class="card">
+            <h3>Data Management</h3>
+            <p style="color: var(--text-muted); margin-bottom: 16px;">Clear all your tracking data. This action cannot be undone.</p>
+            <button id="clearData" class="btn-primary" style="background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);">Clear All Data</button>
+        </div>
     </div>
   </div>
   <script src="dashboard.js"></script>

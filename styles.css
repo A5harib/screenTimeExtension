@@ -1,20 +1,20 @@
 :root {
-  --primary-color: #60a5fa;
-  --secondary-color: #c084fc;
+  --primary-color: #ef4444; /* Red */
+  --secondary-color: #7f1d1d; /* Dark Red */
   --text-color: #ffffff;
-  --text-muted: #cbd5e1;
-  --glass-bg: rgba(255, 255, 255, 0.05);
-  --glass-border: rgba(255, 255, 255, 0.1);
-  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  --text-muted: #d1d5db; /* Light gray */
+  --glass-bg: rgba(0, 0, 0, 0.4); /* Darker glass */
+  --glass-border: rgba(255, 68, 68, 0.1); /* Reddish border */
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
 }
 
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  background: #0f172a; /* Fallback */
+  background: #000000;
   background-image: 
-    radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), 
-    radial-gradient(at 50% 0%, hsla(225,39%,30%,1) 0, transparent 50%), 
-    radial-gradient(at 100% 0%, hsla(339,49%,30%,1) 0, transparent 50%);
+    radial-gradient(at 0% 0%, hsla(0, 72%, 15%, 1) 0, transparent 50%), 
+    radial-gradient(at 50% 100%, hsla(0, 0%, 5%, 1) 0, transparent 50%), 
+    radial-gradient(at 100% 0%, hsla(0, 84%, 20%, 1) 0, transparent 50%);
   background-attachment: fixed;
   background-size: cover;
   color: var(--text-color);
@@ -39,15 +39,16 @@ button {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, rgba(96, 165, 250, 0.2) 0%, rgba(192, 132, 252, 0.2) 100%);
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(127, 29, 29, 0.2) 100%);
   color: white;
   padding: 10px 20px;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.2);
 }
 
 .btn-primary:hover {
-  background: linear-gradient(135deg, rgba(96, 165, 250, 0.4) 0%, rgba(192, 132, 252, 0.4) 100%);
-  box-shadow: 0 0 15px rgba(192, 132, 252, 0.3);
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.4) 0%, rgba(127, 29, 29, 0.4) 100%);
+  box-shadow: 0 0 15px rgba(239, 68, 68, 0.3);
   transform: translateY(-1px);
 }
 
@@ -70,12 +71,12 @@ button {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 68, 68, 0.2);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 68, 68, 0.4);
 }
 
 /* Animations */
@@ -86,7 +87,7 @@ button {
 }
 
 .header h1 {
-  background: linear-gradient(to right, #60a5fa, #c084fc);
+  background: linear-gradient(to right, #ef4444, #f87171);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }

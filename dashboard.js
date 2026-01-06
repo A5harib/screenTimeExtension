@@ -1,6 +1,39 @@
 document.addEventListener('DOMContentLoaded', async () => {
+  setupNavigation();
+  setupSettings();
   await renderDashboard();
 });
+
+function setupNavigation() {
+  const navItems = document.querySelectorAll('.nav-item');
+  const sections = document.querySelectorAll('.tab-content');
+
+  navItems.forEach(item => {
+    item.addEventListener('click', () => {
+      // Update active nav
+      navItems.forEach(n => n.classList.remove('active'));
+      item.classList.add('active');
+
+      // Show section
+      const tabId = item.getAttribute('data-tab');
+      sections.forEach(s => s.style.display = 'none');
+      document.getElementById(`${tabId}-section`).style.display = 'block';
+    });
+  });
+}
+
+function setupSettings() {
+  const clearBtn = document.getElementById('clearData');
+  if (clearBtn) {
+    clearBtn.addEventListener('click', async () => {
+      if (confirm('Are you sure you want to delete all tracking data?')) {
+        await chrome.storage.local.clear();
+        alert('Data cleared.');
+        location.reload();
+      }
+    });
+  }
+}
 
 async function renderDashboard() {
   const today = new Date().toLocaleDateString('en-CA');
@@ -33,26 +66,40 @@ async function renderDashboard() {
     document.getElementById('topSite').textContent = sites[0].domain;
   }
 
-  // Update Table
-  const tableBody = document.querySelector('#siteTable tbody');
-  tableBody.innerHTML = '';
-  sites.slice(0, 20).forEach(site => {
-    const row = document.createElement('tr');
-    const percentage = todayTotalSeconds > 0 ? ((site.seconds / todayTotalSeconds) * 100).toFixed(1) : 0;
-    row.innerHTML = `
-      <td>${site.domain}</td>
-      <td>${formatTime(site.seconds)}</td>
-      <td>
-        <div style="display: flex; align-items: center; gap: 8px;">
-          <div style="width: 100px; height: 6px; background: #334155; border-radius: 3px; overflow: hidden;">
-            <div style="width: ${percentage}%; height: 100%; background: var(--primary-color);"></div>
+  // Helper to render rows
+  const renderRows = (containerId, items, limit = null) => {
+    const tableBody = document.querySelector(`#${containerId} tbody`);
+    if (!tableBody) return;
+    tableBody.innerHTML = '';
+    
+    const dataToRender = limit ? items.slice(0, limit) : items;
+    
+    dataToRender.forEach(site => {
+      if (site.domain === 'null') return; // Filter out nulls
+      
+      const row = document.createElement('tr');
+      const percentage = todayTotalSeconds > 0 ? ((site.seconds / todayTotalSeconds) * 100).toFixed(1) : 0;
+      row.innerHTML = `
+        <td>${site.domain}</td>
+        <td>${formatTime(site.seconds)}</td>
+        <td>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <div style="width: 50px; height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; overflow: hidden;">
+              <div style="width: ${percentage}%; height: 100%; background: var(--primary-color);"></div>
+            </div>
+            <span style="font-size: 0.8em">${percentage}%</span>
           </div>
-          ${percentage}%
-        </div>
-      </td>
-    `;
-    tableBody.appendChild(row);
-  });
+        </td>
+      `;
+      tableBody.appendChild(row);
+    });
+  };
+
+  // Render Analytics Table (Full)
+  renderRows('siteTable', sites);
+
+  // Render Mini Table (Top 5)
+  renderRows('miniSiteTable', sites, 5);
 
   // --- Process Weekly Data for Chart ---
   const dailyTotals = dates.map(date => {
@@ -75,7 +122,7 @@ async function renderDashboard() {
       datasets: [{
         label: 'Daily Usage (Hours)',
         data: dailyTotals,
-        backgroundColor: '#3b82f6',
+        backgroundColor: '#ef4444',
         borderRadius: 4,
         barThickness: 40
       }]
@@ -106,6 +153,9 @@ async function renderDashboard() {
 function formatTime(seconds) {
   const h = Math.floor(seconds / 3600);
   const m = Math.floor((seconds % 3600) / 60);
+  const s = Math.floor(seconds % 60);
+  
   if (h > 0) return `${h}h ${m}m`;
-  return `${m}m`;
+  if (m > 0) return `${m}m` + (s > 0 ? ` ${s}s` : '');
+  return `${s}s`;
 }
