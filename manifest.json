@@ -1,0 +1,25 @@
+{
+  "manifest_version": 3,
+  "name": "ScreenTime Tracker",
+  "version": "1.0",
+  "description": "Tracks time spent on websites and visualizes your browsing habits.",
+  "permissions": [
+    "tabs",
+    "storage",
+    "idle",
+    "alarms"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Check your ScreenTime"
+  },
+  "icons": {
+    "128": "icon.png"
+  }
+}

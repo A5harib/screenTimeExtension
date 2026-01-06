@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ScreenTime</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      width: 320px;
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+      /* Background handled by styles.css body rule */
+    }
+    
+    /* Small ambient glow for popup */
+    .glow {
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      background: radial-gradient(circle, rgba(96, 165, 250, 0.4) 0%, transparent 70%);
+      top: -100px;
+      left: -50px;
+      z-index: -1;
+      filter: blur(40px);
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .header h3 {
+      font-size: 1.2rem;
+      background: linear-gradient(to right, #60a5fa, #c084fc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .total-time-card {
+      /* Shared glass styles from CSS */
+      padding: 20px;
+      text-align: center;
+      margin-bottom: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    /* Shine effect on card */
+    .total-time-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(to right, transparent, rgba(255,255,255,0.1), transparent);
+      transform: skewX(-25deg);
+      animation: shine 6s infinite;
+    }
+    
+    @keyframes shine {
+      0% { left: -100%; }
+      20% { left: 200%; }
+      100% { left: 200%; }
+    }
+
+    .total-time-label {
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .total-time-value {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: white;
+      text-shadow: 0 0 20px rgba(96, 165, 250, 0.5);
+    }
+    
+    .top-sites {
+      margin-bottom: 20px;
+      background: rgba(0,0,0,0.2);
+      border-radius: 12px;
+      padding: 8px;
+    }
+    .site-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 8px;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      transition: background 0.2s;
+      border-radius: 6px;
+    }
+    .site-row:last-child {
+      border-bottom: none;
+    }
+    .site-row:hover {
+      background: rgba(255,255,255,0.05);
+      color: white;
+    }
+    .site-name {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 180px;
+    }
+    .site-time {
+      font-family: monospace;
+      font-weight: 600;
+    }
+    
+    .footer {
+      text-align: center;
+    }
+    .btn-full {
+      width: 100%;
+      padding: 12px;
+      font-size: 0.95rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="glow"></div>
+  <div class="header">
+    <h3>Today's Activity</h3>
+  </div>
+
+  <div class="total-time-card">
+    <div class="total-time-label">Total Duration</div>
+    <div class="total-time-value" id="totalTime">...</div>
+  </div>
+
+  <div class="top-sites" id="topSites">
+    <!-- Sites injected here -->
+  </div>
+
+  <div class="footer">
+    <button id="openDashboard" class="btn-primary btn-full">View Full Dashboard</button>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
